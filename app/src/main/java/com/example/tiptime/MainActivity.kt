@@ -76,12 +76,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TipTimeLayout() {
     var amountInput by remember { mutableStateOf("") }
-    var tipInput by remember { mutableStateOf("") }
+    var litersInput by remember { mutableStateOf("") }
+    var rangeInput by remember { mutableStateOf("") }
     var roundUp by remember { mutableStateOf(false) }
 
     val amount = amountInput.toDoubleOrNull() ?: 0.0
-    val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
-    val tip = calculateTip(amount, tipPercent, roundUp)
+    val liters = litersInput.toDoubleOrNull() ?: 0.0
+    var range = rangeInput.toDoubleOrNull()?:0.0
+    val kmperLiters = calculateKmPerLiters(range, liters, roundUp)
+    val dollarperLiters = calculateDollarPerLiters(amount,liters,roundUp)
 
     val focusManager = LocalFocusManager.current
 
@@ -93,7 +96,7 @@ fun TipTimeLayout() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(R.string.calculate_tip),
+            text = stringResource(R.string.Fuel_Consumption),
             modifier = Modifier
                 .padding(bottom = 16.dp)
                 .align(alignment = Alignment.Start)
@@ -110,23 +113,40 @@ fun TipTimeLayout() {
             modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
         )
         EditNumberField(
-            label = R.string.how_was_the_service,
+            label = R.string.Range,
             leadingIcon = R.drawable.percent,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
             ),
-            value = tipInput,
-            onValueChanged = { tipInput = it },
+            value = rangeInput,
+            onValueChanged = { rangeInput = it },
             modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
         )
+        EditNumberField(
+            label = R.string.Liters,
+            leadingIcon = R.drawable.percent,
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
+            value = litersInput,
+            onValueChanged = { litersInput = it },
+            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
+        )
+
         RoundTheTipRow(
             roundUp = roundUp,
             onRoundUpChanged = { roundUp = it },
             modifier = Modifier.padding(bottom = 32.dp)
         )
         Text(
-            text = stringResource(R.string.tip_amount, tip),
+            text = stringResource(R.string.KM_Per_Liters, kmperLiters),
+            style = MaterialTheme.typography.displaySmall
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = stringResource(R.string.Dollar_Per_Liters, dollarperLiters),
             style = MaterialTheme.typography.displaySmall
         )
         Spacer(modifier = Modifier.height(150.dp))
@@ -180,12 +200,19 @@ fun RoundTheTipRow(
  * according to the local currency.
  * Example would be "$10.00".
  */
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean): String {
-    var tip = tipPercent / 100 * amount
+private fun calculateKmPerLiters(range: Double, liters: Double = 15.0, roundUp: Boolean): String {
+    var range = range/liters
     if (roundUp) {
-        tip = kotlin.math.ceil(tip)
+        range = kotlin.math.ceil(range)
     }
-    return NumberFormat.getCurrencyInstance().format(tip)
+    return NumberFormat.getInstance().format(range)
+}
+private fun calculateDollarPerLiters(amount: Double, liters: Double = 15.0, roundUp: Boolean): String {
+    var range = amount/liters
+    if (roundUp) {
+        range = kotlin.math.ceil(range)
+    }
+    return NumberFormat.getInstance().format(range)
 }
 
 @Preview(showBackground = true)
