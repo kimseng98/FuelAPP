@@ -140,16 +140,24 @@ fun TipTimeLayout() {
             onRoundUpChanged = { roundUp = it },
             modifier = Modifier.padding(bottom = 32.dp)
         )
-        Text(
-            text = stringResource(R.string.KM_Per_Liters, kmperLiters),
-            style = MaterialTheme.typography.displaySmall
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = stringResource(R.string.Dollar_Per_Liters, dollarperLiters),
-            style = MaterialTheme.typography.displaySmall
-        )
-        Spacer(modifier = Modifier.height(150.dp))
+
+        Column(
+            modifier = Modifier,
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(R.string.KM_Per_Liters, kmperLiters),
+                style = MaterialTheme.typography.displaySmall
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text(
+                text = stringResource(R.string.Dollar_Per_Liters, dollarperLiters),
+                style = MaterialTheme.typography.displaySmall
+
+            )
+            Spacer(modifier = Modifier.height(200.dp))
+        }
     }
 }
 
@@ -184,7 +192,7 @@ fun RoundTheTipRow(
             .fillMaxWidth()
             .size(48.dp),
     ) {
-        Text(text = stringResource(R.string.round_up_tip))
+        Text(text = stringResource(R.string.convert_myr_to_sgd))
         Switch(
             modifier = Modifier
                 .fillMaxWidth()
@@ -200,17 +208,14 @@ fun RoundTheTipRow(
  * according to the local currency.
  * Example would be "$10.00".
  */
-private fun calculateKmPerLiters(range: Double, liters: Double = 15.0, roundUp: Boolean): String {
+private fun calculateKmPerLiters(range: Double, liters: Double = 15.0, Convert: Boolean): String {
     var range = range/liters
-    if (roundUp) {
-        range = kotlin.math.ceil(range)
-    }
     return NumberFormat.getInstance().format(range)
 }
 private fun calculateDollarPerLiters(amount: Double, liters: Double = 15.0, roundUp: Boolean): String {
     var range = amount/liters
     if (roundUp) {
-        range = kotlin.math.ceil(range)
+        range = (amount/3.45)/liters
     }
     return NumberFormat.getInstance().format(range)
 }

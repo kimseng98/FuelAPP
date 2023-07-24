@@ -15,12 +15,12 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Tip Time</string>
+    <string name="app_name">Fuel App</string>
     <string name="Fuel_Consumption">Calculate Fuel Consumption</string>
     <string name="bill_amount">Bill Amount</string>
     <string name="Range">Range (KM)</string>
     <string name="Liters">Liters</string>
-    <string name="round_up_tip">Round up tip?</string>
+    <string name="convert_myr_to_sgd">Convert MYR to SGD?</string>
     <string name="KM_Per_Liters">KM/Liters: %s</string>
     <string name="Dollar_Per_Liters">$/Liters: %s</string>
 </resources>
